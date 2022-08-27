@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "424581119730",
+    "project_id": "amar-notes-flutter-project",
+    "storage_bucket": "amar-notes-flutter-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424581119730:android:1fcf503c889da3d25a5a6b",
+        "android_client_info": {
+          "package_name": "com.habibza.mynotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "424581119730-588fgb67k2itnne0hl3d9dhg26lgh3k3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2gm92seP80AJWegR0k4TXOIJ42rj6O94"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "424581119730-588fgb67k2itnne0hl3d9dhg26lgh3k3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "424581119730-qpj1p6ek9cret51osgk3efiarma936br.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.habibza.mynotes"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
