@@ -33,70 +33,63 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Center(child: Center(child: Text('My Personal Notes'))),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: FutureBuilder(
-            future: Firebase.initializeApp(
-              options: DefaultFirebaseOptions.currentPlatform,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Login Page'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _email,
+              enableSuggestions: false,
+              autocorrect: false,
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
+                hintText: 'E-mail',
+              ),
             ),
-            builder: (context, snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.done:
-                  return Column(
-                    children: [
-                      TextField(
-                        controller: _email,
-                        enableSuggestions: false,
-                        autocorrect: false,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: const InputDecoration(
-                          hintText: 'E-mail',
-                        ),
-                      ),
-                      TextField(
-                        controller: _password,
-                        obscureText: true,
-                        enableSuggestions: false,
-                        autocorrect: false,
-                        decoration: const InputDecoration(
-                          hintText: 'Password',
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      TextButton(
-                        onPressed: () async {
-                          try {
-                            final emal = _email.text;
-                            final password = _password.text;
+            TextField(
+              controller: _password,
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
+              decoration: const InputDecoration(
+                hintText: 'Password',
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            TextButton(
+              onPressed: () async {
+                try {
+                  final emal = _email.text;
+                  final password = _password.text;
 
-                            final UserCredential = await FirebaseAuth.instance
-                                .signInWithEmailAndPassword(
-                                    email: emal, password: password);
-                          } catch (eror) {
-                            print('Something bad happened');
-                            print(eror.runtimeType);
-                            print(eror);
-                            print(eror.hashCode);
-                          }
-                          print('I am yor boss');
-                          print(UserCredential);
-                        },
-                        child: const Text('Log In'),
-                      ),
-                    ],
-                  );
-                default:
-                  return const Text('Loading...');
-              }
-            },
-          ),
+                  final userCredential = await FirebaseAuth.instance
+                      .signInWithEmailAndPassword(
+                          email: emal, password: password);
+                } catch (eror) {
+                  print('Something bad happened');
+                  print(eror.runtimeType);
+                  print(eror);
+                  print(eror.hashCode);
+                }
+                print('I am yor boss');
+                print(UserCredential);
+              },
+              child: const Text('Log In'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil('/register/', (route) => false);
+              },
+              child: const Text('Not Register yet? Register here!'),
+            ),
+          ],
         ),
       ),
     );
