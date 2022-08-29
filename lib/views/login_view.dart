@@ -1,10 +1,10 @@
-import 'dart:math';
+import 'package:mynotes/views/logout_view.dart';
+import 'package:mynotes/views/register_view.dart';
+
+import '../services/auth_service.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import '../firebase_options.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -68,17 +68,17 @@ class _LoginViewState extends State<LoginView> {
                   final emal = _email.text;
                   final password = _password.text;
 
-                  final userCredential = await FirebaseAuth.instance
+                  final UserCredential = await FirebaseAuth.instance
                       .signInWithEmailAndPassword(
                           email: emal, password: password);
+                 await Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/logout/', (route) => false);
                 } catch (eror) {
                   print('Something bad happened');
                   print(eror.runtimeType);
                   print(eror);
                   print(eror.hashCode);
                 }
-                print('I am yor boss');
-                print(UserCredential);
               },
               child: const Text('Log In'),
             ),
@@ -88,6 +88,26 @@ class _LoginViewState extends State<LoginView> {
                     .pushNamedAndRemoveUntil('/register/', (route) => false);
               },
               child: const Text('Not Register yet? Register here!'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await AuthService()
+                    .signInWithGoogle(); //finally, I able to Autheticate my app with google sign-in
+                final user = FirebaseAuth.instance.currentUser;
+
+                if (user != null) {
+                  if (user.emailVerified) {
+                    const LogOutView();
+                    print(user.emailVerified);
+                    print(user);
+                  } else {
+                    const RegisterView();
+                  }
+                } else {
+                  const LoginView();
+                }
+              },
+              child: const Text('Or Sign-up with Google'),
             ),
           ],
         ),
