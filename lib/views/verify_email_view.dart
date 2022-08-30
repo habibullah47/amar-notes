@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log ;
+import 'dart:developer' as devtools show log;
 
+import 'package:mynotes/constants/routes.dart';
 
-class VerifyEmailView extends StatefulWidget {  
+class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({Key? key}) : super(key: key);
 
   @override
@@ -30,11 +31,11 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
                   sendEmailVerification();
                 } on FirebaseAuthException catch (e) {
                   devtools.log(e.toString());
-                 devtools.log(e.runtimeType.toString());
-                devtools.log(e.code.characters.toString());
-                 devtools.log(e.code.isEmpty.toString());
-                 devtools.log(e.code.isNotEmpty.toString());
-                 devtools.log(e.code.codeUnits.toString());
+                  devtools.log(e.runtimeType.toString());
+                  devtools.log(e.code.characters.toString());
+                  devtools.log(e.code.isEmpty.toString());
+                  devtools.log(e.code.isNotEmpty.toString());
+                  devtools.log(e.code.codeUnits.toString());
                 }
               },
               child: const Text('Verify E-mail'),
@@ -48,7 +49,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
             ),
             TextButton(
               onPressed: () async {
-                Navigator.pushNamed(context, '/login/');
+                Navigator.pushNamed(context, loginRoute);
               },
               child: const Text('Go Home'),
             ),

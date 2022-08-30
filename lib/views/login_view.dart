@@ -1,3 +1,4 @@
+import 'package:mynotes/constants/routes.dart';
 import 'package:mynotes/views/logout_view.dart';
 import 'package:mynotes/views/register_view.dart';
 
@@ -73,7 +74,7 @@ class _LoginViewState extends State<LoginView> {
                     password: password,
                   );
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/logout/',
+                    notesRoute,
                     (route) => false,
                   );
                 } on FirebaseAuthException catch (eror) {
@@ -89,7 +90,7 @@ class _LoginViewState extends State<LoginView> {
             TextButton(
               onPressed: () {
                 Navigator.of(context)
-                    .pushNamedAndRemoveUntil('/register/', (route) => false);
+                    .pushNamedAndRemoveUntil(registerRoute, (route) => false);
               },
               child: const Text('Not Register yet? Register here!'),
             ),
