@@ -5,6 +5,7 @@ import '../services/auth_service.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer' as devtools show log;
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -64,20 +65,23 @@ class _LoginViewState extends State<LoginView> {
             ),
             TextButton(
               onPressed: () async {
+                final emal = _email.text;
+                final password = _password.text;
                 try {
-                  final emal = _email.text;
-                  final password = _password.text;
-
-                  final UserCredential = await FirebaseAuth.instance
-                      .signInWithEmailAndPassword(
-                          email: emal, password: password);
-                 await Navigator.of(context)
-                      .pushNamedAndRemoveUntil('/logout/', (route) => false);
-                } catch (eror) {
-                  print('Something bad happened');
-                  print(eror.runtimeType);
-                  print(eror);
-                  print(eror.hashCode);
+                      await FirebaseAuth.instance.signInWithEmailAndPassword(
+                    email: emal,
+                    password: password,
+                  );
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/logout/',
+                    (route) => false,
+                  );
+                } on FirebaseAuthException catch (eror) {
+                  if (eror.code == 'user-not-foung') {
+                    devtools.log('user not found');
+                  } else if (eror.code == 'wrong-password') {
+                    devtools.log('Wrong Password');
+                  }
                 }
               },
               child: const Text('Log In'),
@@ -98,8 +102,8 @@ class _LoginViewState extends State<LoginView> {
                 if (user != null) {
                   if (user.emailVerified) {
                     const LogOutView();
-                    print(user.emailVerified);
-                    print(user);
+                    devtools.log(user.emailVerified.toString());
+                    devtools.log(user.toString());
                   } else {
                     const RegisterView();
                   }

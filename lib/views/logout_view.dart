@@ -45,17 +45,8 @@ class _LogOutViewState extends State<LogOutView> {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Text(FirebaseAuth.instance.currentUser!.displayName!),
-            Text(FirebaseAuth.instance.currentUser!.email!),
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text('Log Out Your Account'),
-            ),
-          ],
-        ),
+      body: const Center(
+        child: Text('data'),
       ),
     );
   }
@@ -69,17 +60,22 @@ Future<bool> showLogOutDialog(BuildContext context) {
         title: const Text(' Signout'),
         content: const Text('Are You Sure You want to Sign-out?'),
         actions: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop(false);
-            },
-            child: const Text('Cencel'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(true);
-            },
-            child: const Text('Submit'),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: const Text('Cencel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: const Text('Submit'),
+              ),
+            ],
           ),
         ],
       );
