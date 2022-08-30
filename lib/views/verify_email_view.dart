@@ -24,47 +24,30 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
             const SizedBox(
               height: 40,
             ),
-            const Text('Please Verify your email address'),
-            TextButton(
-              onPressed: () async {
-                try {
-                  sendEmailVerification();
-                } on FirebaseAuthException catch (e) {
-                  devtools.log(e.toString());
-                  devtools.log(e.runtimeType.toString());
-                  devtools.log(e.code.characters.toString());
-                  devtools.log(e.code.isEmpty.toString());
-                  devtools.log(e.code.isNotEmpty.toString());
-                  devtools.log(e.code.codeUnits.toString());
-                }
-              },
-              child: const Text('Verify E-mail'),
-            ),
+            const Text(
+                'We\'ve sent you a verification Email, Please open it to verify your account.'),
+            const Text(
+                'If you haven\'t received a verification Email yet, press the button below. '),
             TextButton(
               onPressed: () async {
                 final user = FirebaseAuth.instance.currentUser;
-                await user?.delete();
+                await user?.sendEmailVerification();
               },
-              child: const Text('Delete Your account'),
+              child: const Text('Send email verification'),
             ),
             TextButton(
               onPressed: () async {
-                Navigator.pushNamed(context, loginRoute);
+                await FirebaseAuth.instance.signOut();
+                await Navigator.of(context).pushNamedAndRemoveUntil(
+                  registerRoute,
+                  (route) => false,
+                );
               },
-              child: const Text('Go Home'),
+              child: const Text('Delete Your account'),
             ),
           ],
         ),
       ),
     );
-  }
-}
-
-Future sendEmailVerification() async {
-  try {
-    final user = FirebaseAuth.instance.currentUser!;
-    await user.sendEmailVerification();
-  } catch (e) {
-    devtools.log(e.toString());
   }
 }

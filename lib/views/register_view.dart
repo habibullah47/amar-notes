@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:mynotes/constants/routes.dart';
 
 import '../firebase_options.dart';
-import 'dart:developer' as devtools show log;
-
 import '../utilities/show_error_dialog.dart';
 
 class RegisterView extends StatefulWidget {
@@ -77,21 +75,48 @@ class _RegisterViewState extends State<RegisterView> {
                         final password = _password.text;
 
                         try {
-                          final UserCredential = await FirebaseAuth.instance
+                          await FirebaseAuth.instance
                               .createUserWithEmailAndPassword(
-                                  email: emal, password: password);
-                          await Navigator.of(context).pushNamedAndRemoveUntil(
-                              verifyemailRoute, (route) => false);
+                            email: emal,
+                            password: password,
+                          );
+                          final user = FirebaseAuth.instance.currentUser;
+                          await user?.sendEmailVerification();
+
+                          await Navigator.of(context)
+                              .pushNamed(verifyEmailRoute);
                         } on FirebaseAuthException catch (e) {
-                          devtools.log(e.credential.toString());
                           if (e.code == 'weak-password') {
                             await showErrorDialog(
                               context,
                               'Weak Password',
                             );
+                          } else if (e.code == 'email-already-in-use') {
+                            await showErrorDialog(
+                              context,
+                              'Email is already in use',
+                            );
+                          } else if (e.code == 'invalid-email') {
+                            await showErrorDialog(
+                              context,
+                              'Invalid email',
+                            );
+                          } else if (e.code == e.code) {
+                            await showErrorDialog(
+                              context,
+                              'Error ${e.code} ',
+                            );
+                          } else {
+                            await showErrorDialog(
+                              context,
+                              e.credential.toString(),
+                            );
                           }
-                          devtools.log(e.code);
-                          devtools.log(e.runtimeType.toString());
+                        } catch (e) {
+                          await showErrorDialog(
+                            context,
+                            e.toString(), //this for error catch up when unathorised error occuring
+                          );
                         }
                       },
                       child: const Text('Registration'),

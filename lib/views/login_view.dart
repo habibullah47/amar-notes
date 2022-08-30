@@ -84,7 +84,7 @@ class _LoginViewState extends State<LoginView> {
                     );
                   } else {
                     await Navigator.of(context).pushNamedAndRemoveUntil(
-                      verifyemailRoute,
+                      verifyEmailRoute,
                       (route) => false,
                     );
                   }
