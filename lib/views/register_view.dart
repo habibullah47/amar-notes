@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:mynotes/constants/routes.dart';
 
 import '../firebase_options.dart';
-import 'dart:developer' as devtools show log ;
+import 'dart:developer' as devtools show log;
 
+import '../utilities/show_error_dialog.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -79,15 +80,19 @@ class _RegisterViewState extends State<RegisterView> {
                           final UserCredential = await FirebaseAuth.instance
                               .createUserWithEmailAndPassword(
                                   email: emal, password: password);
+                          await Navigator.of(context).pushNamedAndRemoveUntil(
+                              verifyemailRoute, (route) => false);
                         } on FirebaseAuthException catch (e) {
+                          devtools.log(e.credential.toString());
                           if (e.code == 'weak-password') {
-                            devtools.log('weak password');
+                            await showErrorDialog(
+                              context,
+                              'Weak Password',
+                            );
                           }
                           devtools.log(e.code);
                           devtools.log(e.runtimeType.toString());
                         }
-
-                        print(UserCredential);
                       },
                       child: const Text('Registration'),
                     ),

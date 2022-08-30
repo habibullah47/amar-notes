@@ -8,6 +8,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
+import '../utilities/show_error_dialog.dart';
+
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
 
@@ -68,21 +70,45 @@ class _LoginViewState extends State<LoginView> {
               onPressed: () async {
                 final emal = _email.text;
                 final password = _password.text;
+                final user = FirebaseAuth.instance.currentUser;
                 try {
-                      await FirebaseAuth.instance.signInWithEmailAndPassword(
+                  await FirebaseAuth.instance.signInWithEmailAndPassword(
                     email: emal,
                     password: password,
                   );
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    notesRoute,
-                    (route) => false,
-                  );
-                } on FirebaseAuthException catch (eror) {
-                  if (eror.code == 'user-not-foung') {
-                    devtools.log('user not found');
-                  } else if (eror.code == 'wrong-password') {
-                    devtools.log('Wrong Password');
+                  //created
+                  if (user == user?.emailVerified) {
+                    await Navigator.of(context).pushNamedAndRemoveUntil(
+                      notesRoute,
+                      (route) => false,
+                    );
+                  } else {
+                    await Navigator.of(context).pushNamedAndRemoveUntil(
+                      verifyemailRoute,
+                      (route) => false,
+                    );
                   }
+
+                  devtools.log(user.toString());
+                } on FirebaseAuthException catch (eror) {
+                  if (eror.code == 'user-not-found') {
+                    await showErrorDialog(
+                      context,
+                      'User not found. Registration Please.',
+                    );
+                  } else if (eror.code == 'wrong-password') {
+                    await showErrorDialog(
+                      context,
+                      'Wrong Password',
+                    );
+                  } else {
+                    await showErrorDialog(context, 'Error: ${eror.code}');
+                  }
+                } catch (e) {
+                  await showErrorDialog(
+                    context,
+                    e.toString(),
+                  );
                 }
               },
               child: const Text('Log In'),
@@ -120,3 +146,4 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
+

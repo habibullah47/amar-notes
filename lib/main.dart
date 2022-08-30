@@ -7,8 +7,8 @@ import 'package:mynotes/views/logout_view.dart';
 import 'package:mynotes/views/register_view.dart';
 import 'package:mynotes/views/verify_email_view.dart';
 import 'firebase_options.dart';
-import 'dart:developer' as devtools
-    show log; //'as' is use for easy recogonise of import
+// import 'dart:developer' as devtools
+//     show log; //'as' is use for easy recogonise of import
 //'show' is use for specific  item from import stuff.
 
 void main() async {
@@ -21,6 +21,7 @@ void main() async {
         notesRoute: (context) => const LogOutView(),
         registerRoute: (context) => const RegisterView(),
         loginRoute: (context) => const LoginView(),
+        verifyemailRoute: (context) => const VerifyEmailView(),
       },
     ),
   );
