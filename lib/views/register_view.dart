@@ -1,9 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mynotes/constants/routes.dart';
+import 'package:mynotes/services/auth/auth_exceptions.dart';
+import 'package:mynotes/services/auth/auth_service.dart';
 
-import '../firebase_options.dart';
 import '../utilities/show_error_dialog.dart';
 
 class RegisterView extends StatefulWidget {
@@ -40,9 +39,7 @@ class _RegisterViewState extends State<RegisterView> {
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: FutureBuilder(
-          future: Firebase.initializeApp(
-            options: DefaultFirebaseOptions.currentPlatform,
-          ),
+          future: AuthService.firebase().initialize(), //focus on changed
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.done:
@@ -75,47 +72,32 @@ class _RegisterViewState extends State<RegisterView> {
                         final password = _password.text;
 
                         try {
-                          await FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
-                            email: emal,
+                          await AuthService.firebase().createUser(
+                            emal: emal,
                             password: password,
-                          );
-                          final user = FirebaseAuth.instance.currentUser;
-                          await user?.sendEmailVerification();
-
+                          ); //focus on changed
+                          await AuthService.firebase().SendEmailVerification();
                           await Navigator.of(context)
                               .pushNamed(verifyEmailRoute);
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'weak-password') {
-                            await showErrorDialog(
-                              context,
-                              'Weak Password',
-                            );
-                          } else if (e.code == 'email-already-in-use') {
-                            await showErrorDialog(
-                              context,
-                              'Email is already in use',
-                            );
-                          } else if (e.code == 'invalid-email') {
-                            await showErrorDialog(
-                              context,
-                              'Invalid email',
-                            );
-                          } else if (e.code == e.code) {
-                            await showErrorDialog(
-                              context,
-                              'Error ${e.code} ',
-                            );
-                          } else {
-                            await showErrorDialog(
-                              context,
-                              e.credential.toString(),
-                            );
-                          }
-                        } catch (e) {
+                        } on WeakPasswordAuthException {
                           await showErrorDialog(
                             context,
-                            e.toString(), //this for error catch up when unathorised error occuring
+                            'Weak Password',
+                          );
+                        } on EmailAlreadyInUseAuthException {
+                          await showErrorDialog(
+                            context,
+                            'Email is already in use',
+                          );
+                        } on InvalidEmailAuthException {
+                          await showErrorDialog(
+                            context,
+                            'Invalid email',
+                          );
+                        } on GenericAuthException {
+                          await showErrorDialog(
+                            context,
+                            'Failed to register', //this is for error catch up when unathorised error occuring
                           );
                         }
                       },
