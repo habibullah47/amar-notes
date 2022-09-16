@@ -1,0 +1,117 @@
+[1mdiff --git a/lib/services/auth_service.dart b/lib/services/auth_service.dart[m
+[1mdeleted file mode 100644[m
+[1mindex 0a09e7f..0000000[m
+[1m--- a/lib/services/auth_service.dart[m
+[1m+++ /dev/null[m
+[36m@@ -1,19 +0,0 @@[m
+[31m-[m
+[31m-import 'package:firebase_auth/firebase_auth.dart';[m
+[31m-import 'package:google_sign_in/google_sign_in.dart';[m
+[31m-[m
+[31m-class AuthService {[m
+[31m-  signInWithGoogle() async {[m
+[31m-    final GoogleSignInAccount? googleUser =[m
+[31m-        await GoogleSignIn(scopes: <String>["email"]).signIn();[m
+[31m-[m
+[31m-    final GoogleSignInAuthentication googleAuth =[m
+[31m-        await googleUser!.authentication;[m
+[31m-[m
+[31m-    final credential = GoogleAuthProvider.credential([m
+[31m-      accessToken: googleAuth.accessToken,[m
+[31m-      idToken: googleAuth.idToken,[m
+[31m-    );[m
+[31m-    return await FirebaseAuth.instance.signInWithCredential(credential);[m
+[31m-  }[m
+[31m-}[m
+[1mdiff --git a/lib/views/login_view.dart b/lib/views/login_view.dart[m
+[1mindex 5cf683d..33269b5 100644[m
+[1m--- a/lib/views/login_view.dart[m
+[1m+++ b/lib/views/login_view.dart[m
+[36m@@ -1,12 +1,9 @@[m
+ import 'package:mynotes/constants/routes.dart';[m
+[31m-import 'package:mynotes/views/logout_view.dart';[m
+[31m-import 'package:mynotes/views/register_view.dart';[m
+ [m
+[31m-import '../services/auth_service.dart';[m
+ [m
+ import 'package:firebase_auth/firebase_auth.dart';[m
+ import 'package:flutter/material.dart';[m
+[31m-import 'dart:developer' as devtools show log;[m
+[32m+[m
+ [m
+ import '../utilities/show_error_dialog.dart';[m
+ [m
+[36m@@ -70,14 +67,15 @@[m [mclass _LoginViewState extends State<LoginView> {[m
+               onPressed: () async {[m
+                 final emal = _email.text;[m
+                 final password = _password.text;[m
+[31m-                final user = FirebaseAuth.instance.currentUser;[m
+[32m+[m[41m                [m
+                 try {[m
+                   await FirebaseAuth.instance.signInWithEmailAndPassword([m
+                     email: emal,[m
+                     password: password,[m
+                   );[m
+[32m+[m[32m                  final user = FirebaseAuth.instance.currentUser;[m
+                   //created[m
+[31m-                  if (user == user?.emailVerified) {[m
+[32m+[m[32m                  if(user?.emailVerified ?? false){[m
+                     await Navigator.of(context).pushNamedAndRemoveUntil([m
+                       notesRoute,[m
+                       (route) => false,[m
+[36m@@ -88,8 +86,6 @@[m [mclass _LoginViewState extends State<LoginView> {[m
+                       (route) => false,[m
+                     );[m
+                   }[m
+[31m-[m
+[31m-                  devtools.log(user.toString());[m
+                 } on FirebaseAuthException catch (eror) {[m
+                   if (eror.code == 'user-not-found') {[m
+                     await showErrorDialog([m
+[36m@@ -120,26 +116,6 @@[m [mclass _LoginViewState extends State<LoginView> {[m
+               },[m
+               child: const Text('Not Register yet? Register here!'),[m
+             ),[m
+[31m-            TextButton([m
+[31m-              onPressed: () async {[m
+[31m-                await AuthService()[m
+[31m-                    .signInWithGoogle(); //finally, I able to Autheticate my app with google sign-in[m
+[31m-                final user = FirebaseAuth.instance.currentUser;[m
+[31m-[m
+[31m-                if (user != null) {[m
+[31m-                  if (user.emailVerified) {[m
+[31m-                    const LogOutView();[m
+[31m-                    devtools.log(user.emailVerified.toString());[m
+[31m-                    devtools.log(user.toString());[m
+[31m-                  } else {[m
+[31m-                    const RegisterView();[m
+[31m-                  }[m
+[31m-                } else {[m
+[31m-                  const LoginView();[m
+[31m-                }[m
+[31m-              },[m
+[31m-              child: const Text('Or Sign-up with Google'),[m
+[31m-            ),[m
+           ],[m
+         ),[m
+       ),[m
+[1mdiff --git a/lib/views/verify_email_view.dart b/lib/views/verify_email_view.dart[m
+[1mindex e8ea27f..89abcd0 100644[m
+[1m--- a/lib/views/verify_email_view.dart[m
+[1m+++ b/lib/views/verify_email_view.dart[m
+[36m@@ -1,6 +1,5 @@[m
+ import 'package:firebase_auth/firebase_auth.dart';[m
+ import 'package:flutter/material.dart';[m
+[31m-import 'dart:developer' as devtools show log;[m
+ [m
+ import 'package:mynotes/constants/routes.dart';[m
+ [m
+[36m@@ -43,7 +42,7 @@[m [mclass _VerifyEmailViewState extends State<VerifyEmailView> {[m
+                   (route) => false,[m
+                 );[m
+               },[m
+[31m-              child: const Text('Delete Your account'),[m
+[32m+[m[32m              child: const Text('Restart '),[m
+             ),[m
+           ],[m
+         ),[m

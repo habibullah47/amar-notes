@@ -1,12 +1,9 @@
 import 'package:mynotes/constants/routes.dart';
-import 'package:mynotes/views/logout_view.dart';
-import 'package:mynotes/views/register_view.dart';
 
-import '../services/auth_service.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
+
 
 import '../utilities/show_error_dialog.dart';
 
@@ -70,14 +67,15 @@ class _LoginViewState extends State<LoginView> {
               onPressed: () async {
                 final emal = _email.text;
                 final password = _password.text;
-                final user = FirebaseAuth.instance.currentUser;
+                
                 try {
                   await FirebaseAuth.instance.signInWithEmailAndPassword(
                     email: emal,
                     password: password,
                   );
+                  final user = FirebaseAuth.instance.currentUser;
                   //created
-                  if (user == user?.emailVerified) {
+                  if(user?.emailVerified ?? false){
                     await Navigator.of(context).pushNamedAndRemoveUntil(
                       notesRoute,
                       (route) => false,
@@ -88,8 +86,6 @@ class _LoginViewState extends State<LoginView> {
                       (route) => false,
                     );
                   }
-
-                  devtools.log(user.toString());
                 } on FirebaseAuthException catch (eror) {
                   if (eror.code == 'user-not-found') {
                     await showErrorDialog(
@@ -119,26 +115,6 @@ class _LoginViewState extends State<LoginView> {
                     .pushNamedAndRemoveUntil(registerRoute, (route) => false);
               },
               child: const Text('Not Register yet? Register here!'),
-            ),
-            TextButton(
-              onPressed: () async {
-                await AuthService()
-                    .signInWithGoogle(); //finally, I able to Autheticate my app with google sign-in
-                final user = FirebaseAuth.instance.currentUser;
-
-                if (user != null) {
-                  if (user.emailVerified) {
-                    const LogOutView();
-                    devtools.log(user.emailVerified.toString());
-                    devtools.log(user.toString());
-                  } else {
-                    const RegisterView();
-                  }
-                } else {
-                  const LoginView();
-                }
-              },
-              child: const Text('Or Sign-up with Google'),
             ),
           ],
         ),
