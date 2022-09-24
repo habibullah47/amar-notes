@@ -63,7 +63,10 @@ class _NewNoteViewState extends State<NewNoteView> {
     final note = _note;
     final text = _textController.text;
     if (note != null && text.isNotEmpty) {
-      await _notesService.updateNote(note: note, text: text);
+      await _notesService.updateNote(
+        note: note,
+        text: text,
+      );
     }
   }
 
@@ -79,21 +82,21 @@ class _NewNoteViewState extends State<NewNoteView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('New Note'),
+        title: const Text('New Note'),
       ),
       body: FutureBuilder(
         future: createNewNote(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
-              _note = snapshot.data as DatabaseNote;
+              _note = snapshot.data as DatabaseNote?; //? this is a damn sign
               _setupTextControllerListener();
               return TextField(
                 controller: _textController,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
-                // decoration: const InputDecoration(
-                //     hintText: 'Start Typing Your Note...'),
+                decoration: const InputDecoration(
+                    hintText: 'Start Typing Your Note...'),
               );
             default:
               return const CircularProgressIndicator();

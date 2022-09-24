@@ -16,18 +16,23 @@ class NotesService {
   List<DatabaseNote> _notes = [];
 
   static final NotesService _shared = NotesService._sharedInstance();
-  NotesService._sharedInstance();
+  NotesService._sharedInstance() {
+    _notesStreamController = StreamController.broadcast(
+      onListen: () {
+        _notesStreamController.sink.add(_notes);
+      },
+      
+    );
+  }
   factory NotesService() => _shared;
 
-  final _notesStreamController =
-      StreamController<List<DatabaseNote>>.broadcast();
+  late final StreamController<List<DatabaseNote>> _notesStreamController;
 
   Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
 
   Future<DatabaseUser> getOrCreateUser({required String email}) async {
     try {
       final user = await getUser(email: email);
-      await _ensureDbIsOpen();
       return user;
     } on CouldNotFindUser {
       final createdUser = await createUser(email: email);
@@ -40,6 +45,7 @@ class NotesService {
   Future<void> _catcheNotes() async {
     final allNotes = await getAllNotes();
     _notes = allNotes.toList();
+    _notesStreamController.add(_notes);
   }
 
   Future<DatabaseNote> updateNote({
@@ -49,12 +55,15 @@ class NotesService {
     await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
 
+    // make sure note exists
     await getNote(id: note.id);
 
+    // update DB
     final updatesCount = await db.update(noteTable, {
       textColumn: text,
       isSyncedWithCloudColumn: 0,
     });
+
     if (updatesCount == 0) {
       throw CouldNotUpdateNote;
     } else {
@@ -126,6 +135,7 @@ class NotesService {
 
     //make sure owner exits in the database with the correct id
     final dbUser = getUser(email: owner.email);
+
     if (dbUser != owner) {
       throw CouldNotFindUser();
     }
@@ -184,7 +194,10 @@ class NotesService {
       emailColumn: email.toLowerCase(),
     });
 
-    return DatabaseUser(id: userID, email: email);
+    return DatabaseUser(
+      id: userID,
+      email: email,
+    );
   }
 
   Future<void> deleteUSer({required String email}) async {
@@ -210,14 +223,6 @@ class NotesService {
     }
   }
 
-  Future<void> _ensureDbIsOpen() async {
-    try {
-      await open();
-    } on DatabaseAlreadyOpenException {
-      //empty
-    }
-  }
-
   Future<void> close() async {
     final db = _db;
     if (db == null) {
@@ -225,6 +230,14 @@ class NotesService {
     } else {
       await db.close();
       _db == null;
+    }
+  }
+
+  Future<void> _ensureDbIsOpen() async {
+    try {
+      await open();
+    } on DatabaseAlreadyOpenException {
+      //empty
     }
   }
 
@@ -262,9 +275,7 @@ class DatabaseUser {
         email = map[emailColumn] as String;
 
   @override
-  String toString() {
-    return 'Person, ID = $id, email = $email';
-  }
+  String toString() => 'Person, ID = $id, email = $email';
 
   @override
   bool operator ==(covariant DatabaseUser other) => id == other.id;
