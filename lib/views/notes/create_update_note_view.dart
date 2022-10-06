@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/services/crud/notes_service.dart';
-import 'package:mynotes/utilities/generics/get_urguments.dart';
+import 'package:mynotes/utilities/generics/get_arguments.dart';
 
 class CreateUpdateNoteView extends StatefulWidget {
   const CreateUpdateNoteView({Key? key}) : super(key: key);
@@ -11,16 +11,15 @@ class CreateUpdateNoteView extends StatefulWidget {
 }
 
 class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
-  //chapter: 31 [Creating New Notes]
+   //chapter: 31 [Creating New Notes]
   DatabaseNote? _note;
   late final NotesService _notesService;
   late final TextEditingController _textController;
 
   @override
   void initState() {
-    _notesService = NotesService(); //_notesService;
-    _textController =
-        TextEditingController(); // _textController; May I use only this.
+    _notesService = NotesService();  //_notesService;
+    _textController = TextEditingController(); // _textController; May I use only this.
     super.initState();
   }
 
@@ -65,7 +64,7 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
   void _deleteNoteIfTextIsEmpty() {
     final note = _note;
     if (_textController.text.isEmpty && note != null) {
-      //I think 'note != null' will a error.
+        //I think 'note != null' will a error.
       _notesService.deleteNote(id: note.id);
     }
   }
@@ -106,7 +105,8 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 decoration: const InputDecoration(
-                    hintText: 'Start Typing Your Note...'),
+                  hintText: 'Start typing your note...',
+                ),
               );
             default:
               return const CircularProgressIndicator();

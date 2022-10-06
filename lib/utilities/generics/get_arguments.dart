@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show BuildContext, ModalRoute;
 
-extension GetArguments on BuildContext {
+extension GetArgument on BuildContext {
   T? getArgument<T>() {
     final modalRoute = ModalRoute.of(this);
     if (modalRoute != null) {
@@ -8,8 +8,7 @@ extension GetArguments on BuildContext {
       if (args != null && args is T) {
         return args as T;
       }
-    } else {
-      return null;
-     }
+    }
+    return null;
   }
 }

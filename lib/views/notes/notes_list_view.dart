@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mynotes/services/crud/notes_service.dart';
+import 'package:mynotes/utilities/dialogs/delete_dialog.dart';
 
-import '../../utilities/dialogs/delete_dialog.dart';
-
-typedef NoteCallBack = void Function(DatabaseNote note);
+typedef NoteCallback = void Function(DatabaseNote note);
 
 class NotesListView extends StatelessWidget {
   final List<DatabaseNote> notes;
-  final NoteCallBack onDeleteNote;
-  final NoteCallBack onTap;
+  final NoteCallback onDeleteNote;
+  final NoteCallback onTap;
 
   const NotesListView({
     Key? key,
@@ -40,7 +39,7 @@ class NotesListView extends StatelessWidget {
                 onDeleteNote(note);
               }
             },
-            icon: const Icon(Icons.delete_forever),
+            icon: const Icon(Icons.delete),
           ),
         );
       },

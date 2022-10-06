@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mynotes/constants/routes.dart';
+import 'package:mynotes/enums/menu_action.dart';
+import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/services/crud/notes_service.dart';
+import 'package:mynotes/utilities/dialogs/logout_dialog.dart';
 import 'package:mynotes/views/notes/notes_list_view.dart';
-import '../../enums/menu_action.dart';
-import '../../services/auth/auth_service.dart';
-import '../../utilities/dialogs/logout_dialog.dart';
 
 class NotesView extends StatefulWidget {
   const NotesView({Key? key}) : super(key: key);
 
   @override
-  State<NotesView> createState() => _NotesViewState();
+  _NotesViewState createState() => _NotesViewState();
 }
 
 class _NotesViewState extends State<NotesView> {
@@ -21,7 +21,6 @@ class _NotesViewState extends State<NotesView> {
   void initState() {
     _notesService =
         NotesService(); // I think after [=] this value not important
-    _notesService.open();
     super.initState();
   }
 
@@ -29,11 +28,11 @@ class _NotesViewState extends State<NotesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My Precius Notes"),
+        title: const Text('Habib\' Notes'),
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).pushNamed(createUpdateNoteRoute);
+              Navigator.of(context).pushNamed(createOrUpdateNoteRoute);
             },
             icon: const Icon(Icons.add),
           ),
@@ -41,11 +40,13 @@ class _NotesViewState extends State<NotesView> {
             onSelected: (value) async {
               switch (value) {
                 case MenuAction.logout:
-                  final shouldLogOut = await showLogOutDialog(context);
-                  if (shouldLogOut) {
+                  final shouldLogout = await showLogOutDialog(context);
+                  if (shouldLogout) {
                     await AuthService.firebase().logOut();
-                    Navigator.of(context)
-                        .pushNamedAndRemoveUntil(loginRoute, (_) => false);
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      loginRoute,
+                      (_) => false,
+                    );
                   }
               }
             },
@@ -53,11 +54,11 @@ class _NotesViewState extends State<NotesView> {
               return const [
                 PopupMenuItem<MenuAction>(
                   value: MenuAction.logout,
-                  child: Text('Log Out'),
+                  child: Text('Log out'),
                 ),
               ];
             },
-          ),
+          )
         ],
       ),
       body: FutureBuilder(
@@ -80,7 +81,7 @@ class _NotesViewState extends State<NotesView> {
                           },
                           onTap: (note) {
                             Navigator.of(context).pushNamed(
-                              createUpdateNoteRoute,
+                              createOrUpdateNoteRoute,
                               arguments: note,
                             );
                           },

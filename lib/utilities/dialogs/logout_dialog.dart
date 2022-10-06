@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mynotes/utilities/dialogs/generic_dialog.dart';
 
-Future<bool> showLogOutDialog(
-  BuildContext context
-) {
+Future<bool> showLogOutDialog(BuildContext context) {
   return showGenericDialog<bool>(
     context: context,
     title: 'Log out',
@@ -12,5 +10,7 @@ Future<bool> showLogOutDialog(
       'Cancel': false,
       'Log out': true,
     },
-  ).then((value) => value ?? false); //I think if I keep [?] on <bool> of showLogOutDialog, may doesn't need this line of code anymore 
+  ).then(
+    (value) => value ?? false, //I think if I keep [?] on <bool> of showLogOutDialog, may doesn't need this line of code anymore 
+  );
 }
