@@ -6,12 +6,19 @@ import 'package:mynotes/services/auth/bloc/auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(AuthProvider provider)
       : super(const AuthStateUninitialized(isLoading: true)) {
-    //send email verification
+    // send email verification
     on<AuthEventSendEmailVerification>((event, emit) async {
       await provider.sendEmailVerification();
       emit(state);
     });
-    //register
+
+    //This state just made by me. Wow..🙂😍😃
+    on<AuthEventShoulRegister>((event, emit) async {
+      emit(const AuthStateRegistering(
+        exception: null,
+        isLoading: false,
+      ));
+    });
     on<AuthEventRegister>((event, emit) async {
       final email = event.email;
       final password = event.password;
@@ -29,7 +36,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         ));
       }
     });
-    //initialize
+    // initialize
     on<AuthEventInitialize>((event, emit) async {
       await provider.initialize();
       final user = provider.currentUser;
@@ -49,7 +56,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         ));
       }
     });
-    //login
+    // log in
     on<AuthEventLogIn>((event, emit) async {
       emit(
         const AuthStateLoggedOut(
@@ -80,32 +87,38 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               exception: null,
               isLoading: false,
             ),
-          ); // এই ফাংশনটা না দিলে কি হবে?
+          );
           emit(AuthStateLoggedIn(
             user: user,
             isLoading: false,
           ));
         }
       } on Exception catch (e) {
-        emit(AuthStateLoggedOut(
-          exception: e,
-          isLoading: false,
-        ));
+        emit(
+          AuthStateLoggedOut(
+            exception: e,
+            isLoading: false,
+          ),
+        );
       }
     });
-    //logout
+    // log out
     on<AuthEventLogOut>((event, emit) async {
       try {
         await provider.logOut();
-        emit(const AuthStateLoggedOut(
-          isLoading: false,
-          exception: null,
-        ));
+        emit(
+          const AuthStateLoggedOut(
+            exception: null,
+            isLoading: false,
+          ),
+        );
       } on Exception catch (e) {
-        emit(AuthStateLoggedOut(
-          isLoading: false,
-          exception: e,
-        ));
+        emit(
+          AuthStateLoggedOut(
+            exception: e,
+            isLoading: false,
+          ),
+        );
       }
     });
   }

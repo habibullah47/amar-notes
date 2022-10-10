@@ -18,7 +18,7 @@ void main() {
     MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.indigo,
       ),
       home: BlocProvider<AuthBloc>(
         create: (context) => AuthBloc(FirebaseAuthProvider()),
@@ -58,11 +58,8 @@ class HomePage extends StatelessWidget {
         } else if (state is AuthStateRegistering) {
           return const RegisterView();
         } else {
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text('Processing...'),
-            ),
-            body: const CircularProgressIndicator(),
+          return const Scaffold(
+            body: CircularProgressIndicator(),
           );
         }
       },
