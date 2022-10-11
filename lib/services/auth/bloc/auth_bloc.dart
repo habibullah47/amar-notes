@@ -50,7 +50,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     //This state just made by me. Wow..🙂😍😃
-    on<AuthEventShoulRegister>((event, emit) async {
+    on<AuthEventShoulRegister>((event, emit) {
       emit(const AuthStateRegistering(
         exception: null,
         isLoading: false,
