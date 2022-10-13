@@ -1,3 +1,62 @@
 {
-    "my_title": "My title goes here"
+
+    "logout_button": "লগ আউট",
+    "note": "আমার নোট",
+    "cancel": "বাতিল",
+    "yes": "হ্যাঁ",
+    "delete": "ডিলিট",
+    "sharing": "শেয়ার",
+    "ok": "ঠিকাছে",
+    "login": "লগ ইন",
+    "verify_email": "ইমেইল ভেরিফাই করুন",
+    "register": "রেজিস্টার",
+    "restart": "রেস্টার্ট",
+
+    "start_typing_your_note": "আপনার নোট লিখা শুরু করুন এখানে...",
+    "delete_note_prompt": "আপনি কি নিশ্চিত যে নোটটিকে ডিলিট করতে যাচ্ছেন?",
+    "cannot_share_empty_note_prompt": "খালি নোট শেয়ার করতে পারবেন না!",
+    "generic_error_prompt": "কোন সমস্যা হয়েছে",
+    "logout_dialog_prompt": "আপনি কি নিশ্চিত যে লগ-আউট করতে যাচ্ছেন?",
+
+    "password_reset": "পাসওয়ার্ড রিসেট",
+    "password_reset_dialog_prompt": "আমরা আপনা্র ইমেইলে একটি পাসওয়ার্ড রিসেট লিংক পাঠিয়েছি। আরো তথ্যের জন্য দয়া করে আপনার ইমেইল চেক করুন।",
+                                    
+    "login_error_cannot_find_user": "আপনার দেওয়া তথ্য দিয়ে আমরা কোন ইউজার খোজে পায়নি",
+    "login_error_wrong_credentials": "ভুল তথ্য",
+    "login_error_auth_error": "সিস্টেমের সমস্যা",
+
+    "login_view_prompt": "দয়া করে আপনার একাউন্ট দিয়ে লগিন করুন, যেন আপনি নোট ব্যাবহার করতে পারেন ও নোট লিখতে পারেন!",
+    
+    "login_view_forgot_password": "আমি আমার পাসওয়ার্ড ভুলে গেছি",
+    "login_view_not_registered_yet": "রেজিস্টার করেননি? এখানে রেজিস্টার করুন",
+
+    "email_text_field_placeholder": "এখানে আপনার ইমেইল লিখুন",
+    "password_text_field_placeholder": "এখানে আপনার পাসওয়ার্ড দিন",
+    
+    "forgot_password": "পাসওয়ার্ড ভুলে গেছেন",
+    "forgot_password_view_generic_error": "আমরা আপনার অনুরোধ প্রক্রিয়া করতে পারিনি। অনুগ্রহ করে নিশ্চিত করুন যে আপনি একজন রেজিস্টারকৃত ব্যবহারকারী, যদি না হন, পিছনে গিয়ে আগে একাউন্ট রেজিস্টার করুন।",
+    "forgot_password_view_prompt":"যদি পাসওয়ার্ডটি ভুলে গিয়ে থাকেন তবে শুধু আপনার একাউন্টের ইমেইলটি প্রবেশ করান এরপর আমরা আপনার ইমেইলে ফিরতি পাসওয়ার্ড রিসেট লিংক পাঠাবো।",
+    "forgot_password_view_send_me_link": "পাসওয়ার্ড রিসেট লিংক পাঠান",
+    "forgot_password_view_back_to_login": "লগিন পেইজে ফিরে যান",
+
+    "register_error_weak_password": "প্রদানকৃত পাসওয়ার্ডটি যথেষ্ট নিরাপদ নই। দয়া করে অন্য আরেকটি পাসওয়ার্ড দিন!",
+    "register_error_email_already_in_use": "এই ইমেইলের একজন ইউজার আছে। দয়া করে অন্য একটি ইমেইল ইউজ করুন!",
+    "register_error_generic": "রেজিস্টার প্রক্রিয়া ব্যার্থ হয়েছে, দয়া করে পরে আবার চেষ্টা করুন",
+    "register_error_invalid_email": "আপনার প্রবেশকৃত ইমেইলটি অসিদ্ধ ও ভুল। দয়া করে অন্য একটি ইমেইল দিয়ে চেষ্টা করুন", 
+    "register_view_prompt": "আপনার ইমেইলটি প্রবেশ করান যেন আপনি নোট দেখতে ও লিখতে পারেন",
+    "register_view_already_registered": "ইতিমধ্যে রেজিস্টার করেছেন? এখানে লগিন করুন!",
+
+    "verify_email_view_prompt": "আমরা আপনাকে একটি ভেরিফিকেশন ইমেইল পাঠিয়েছি। একাউন্ট ভেরিফাইয়ের জন্য ইমেইলটি খুলোন। যদি আপনি এখনো ভেরিফিকেশন ইমেইল না পেয়ে থাকেন, তবে নিচের বাটনটি প্রেস করুন।",
+    "verify_email_send_email_verification": "ভেরিফিকেশন ইমেইল আবার পাঠান",
+
+    "notes_title": "{count, plural, =0{কোন নোট নেই} =1{১ টি নোট রয়েছে} other{{count} টি নোট রয়েছে}}",
+    "@notes_title": {
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "3 notes"
+            }
+        }
+    }
+
 }

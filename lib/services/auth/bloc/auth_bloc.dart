@@ -99,7 +99,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         const AuthStateLoggedOut(
           exception: null,
           isLoading: true,
-          loadingText: 'Please wait while I log you in',
+          loadingText:
+              'Please wait while I log you in', //Todo: I am not able l10n this line
         ),
       );
       final email = event.email;
